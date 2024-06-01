@@ -14,7 +14,7 @@ import lombok.Setter;
 @Table(name = "USER_TABLE" , uniqueConstraints = {
         @UniqueConstraint(
                 name="REG_NO_UNIQUE",
-                columnNames={"reg_no"}
+                columnNames={"reg_no_enc"}
         )})
 @Getter
 public class User {

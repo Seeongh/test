@@ -50,7 +50,7 @@ public class UserRepository {
      * @return
      */
     public Optional<User> findByRegNo(String regNo) {
-        List<User> userList = em.createQuery("select u from User u where u.reg_no = :regNo", User.class)
+        List<User> userList = em.createQuery("select u from User u where u.regNo = :regNo", User.class)
                 .setParameter("regNo", regNo)
                 .getResultList();
 

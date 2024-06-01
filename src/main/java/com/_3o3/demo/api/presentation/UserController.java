@@ -22,6 +22,8 @@ public class UserController {
 
     @PostMapping(value = "/signup", consumes = "application/json")
     public ApiResponse<Long> join(@Valid  @RequestBody UserCreateDTO createDto) {
+
+        log.info("ash login = {}", createDto.toString());
         return userService.join(createDto);
     }
 

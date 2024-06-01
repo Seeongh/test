@@ -14,8 +14,16 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
+# 로깅
 logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
+    org.springframework.security: debug
+
+#문자 설정
+http:
+  encoding:
+    charset: UTF-8
+    enabled: true
+    force: true
