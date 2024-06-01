@@ -18,9 +18,10 @@ public class UserRepositoryTest {
     UserRepository userRepository;
 
 
-    /*
-     H2-JPA 연동테스트
-     */
+    /**
+     * 1.H2-JPA 연동테스트
+     * 2. 회원가입
+     **/
 
     //@Rollback(false)
     @Test
@@ -36,7 +37,7 @@ public class UserRepositoryTest {
         //when
 
         Long savedId = userRepository.save(user);
-        User findUser = userRepository.find(savedId);
+        User findUser = userRepository.findById(savedId);
         //then
         Assertions.assertThat(findUser.getId()).isEqualTo(savedId);
         Assertions.assertThat(findUser.getName()).isEqualTo(user.getName());

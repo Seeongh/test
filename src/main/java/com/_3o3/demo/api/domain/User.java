@@ -6,12 +6,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@SequenceGenerator(
+        name = "USER_SEQ_GENERATOR",
+        sequenceName = "USER_SEQ",
+        initialValue = 1, allocationSize = 1
+)
 @Table(name = "USER_TABLE")
 @Getter
 public class User {
 
     //식별자
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue( strategy = GenerationType.SEQUENCE,
+                generator = "USER_SEQ_GENERATOR")
     private Long id;
 
     //사용자 아이디
@@ -25,6 +32,7 @@ public class User {
     private String name;
 
     //사용자 주민 등록 번호
+    @Column(name = "reg_no")
     private String regNo;
 
     @Builder
