@@ -5,9 +5,11 @@ import com._3o3.demo.api.application.dto.UserCreateDTO;
 import com._3o3.demo.api.domain.User;
 import com._3o3.demo.api.infrastructure.UserRepository;
 import com._3o3.demo.common.ApiResponse;
+import com._3o3.demo.common.CustomValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +22,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
+    //유저 저장공간
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
      * 회원 가입
@@ -30,8 +34,9 @@ public class UserService {
     @Transactional
     public ApiResponse<Long> join(UserCreateDTO createDto) {
 
-        //받은 객체를 Entity로 변환
-        User user = createDto.toEntity();
+        //DTO -> Entity 로 변경
+        //비밀번호, 주소 암호화
+        User user = createDto.toEntity(bCryptPasswordEncoder);
 
         validationDuplicateType(user); // 중복 및 오타 검사
 
@@ -42,10 +47,11 @@ public class UserService {
                 : ApiResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, result);
     }
 
+
     private void validationDuplicateType(User user) {
-        Optional<User> findUsers = userRepository.findByName(user.getName());
+        Optional<User> findUsers = userRepository.findByRegNo(user.getName());
         if(findUsers.isPresent()) { //이미 존재
-            //throw
+            throw new CustomValidationException();
         }
     }
 

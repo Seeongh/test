@@ -45,13 +45,13 @@ public class UserRepository {
     }
 
     /**
-     * 중복 여부 확인
+     * 중복 여부 확인 (주민 등록 번호)
      * @param name
      * @return
      */
-    public Optional<User> findByName(String name) {
-        List<User> userList = em.createQuery("select u from User u where u.name = :name", User.class)
-                .setParameter("name", name)
+    public Optional<User> findByRegNo(String regNo) {
+        List<User> userList = em.createQuery("select u from User u where u.reg_no = :regNo", User.class)
+                .setParameter("regNo", regNo)
                 .getResultList();
 
         return userList.stream().findAny();

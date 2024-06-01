@@ -11,7 +11,11 @@ import lombok.Setter;
         sequenceName = "USER_SEQ",
         initialValue = 1, allocationSize = 1
 )
-@Table(name = "USER_TABLE")
+@Table(name = "USER_TABLE" , uniqueConstraints = {
+        @UniqueConstraint(
+                name="REG_NO_UNIQUE",
+                columnNames={"reg_no"}
+        )})
 @Getter
 public class User {
 
@@ -26,13 +30,14 @@ public class User {
     private String userId;
 
     //사용자 비밀번호
+    @Column(name = "password_enc")
     private String password;
 
     //사용자 이름
     private String name;
 
     //사용자 주민 등록 번호
-    @Column(name = "reg_no")
+    @Column(name = "reg_no_enc")
     private String regNo;
 
     @Builder

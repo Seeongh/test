@@ -3,6 +3,7 @@ package com._3o3.demo.api.presentation;
 import com._3o3.demo.api.application.UserService;
 import com._3o3.demo.api.application.dto.UserCreateDTO;
 import com._3o3.demo.common.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping(value = "/signup", consumes = "application/json")
-    public ApiResponse<Long> join(@RequestBody UserCreateDTO createDto) {
+    public ApiResponse<Long> join(@Valid  @RequestBody UserCreateDTO createDto) {
         return userService.join(createDto);
     }
 
