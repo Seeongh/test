@@ -2,6 +2,7 @@ package com._3o3.demo.api.presentation;
 
 import com._3o3.demo.api.application.UserService;
 import com._3o3.demo.api.application.dto.UserCreateDTO;
+import com._3o3.demo.api.application.dto.UserSignInDTO;
 import com._3o3.demo.common.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,11 @@ public class UserController {
 
     @PostMapping(value = "/signup", consumes = "application/json")
     public ApiResponse<Long> join(@Valid  @RequestBody UserCreateDTO createDto) {
-
-        log.info("ash login = {}", createDto.toString());
         return userService.join(createDto);
     }
 
+    @PostMapping(value = "/login")
+    public ApiResponse<String> login(@Valid @RequestBody UserSignInDTO signDto) {
+        return userService.login(signDto);
+    }
 }

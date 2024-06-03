@@ -14,6 +14,13 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+# jwt
+jwt:
+  expiration_time: 86400000 #1일
+  secret: M28zIHNlY3JldCBrZXkgdGVzdCBmb3Igand0IHRva2VuIGdlbmVyYXRpb24=
+  #3o3 secret key test for jwt token generation
+
 # 로깅
 logging:
   level:
@@ -27,3 +34,23 @@ http:
     charset: UTF-8
     enabled: true
     force: true
+
+#swagger설정
+springdoc:
+  swagger-ui:
+    groups-order: DESC
+    tags-sorter: alpha
+    operations-sorter: method
+    disable-swagger-default-url: true
+    display-request-duration: true
+    defaultModelsExpandDepth: 2
+    defaultModelExpandDepth: 2
+  api-docs:
+    path: /3o3/swagger.html
+  show-actuator : true
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  writer-with-default-pretty-printer: true
+  model-and-view-allowed: true
+  paths-to-match:
+    -/szs/**

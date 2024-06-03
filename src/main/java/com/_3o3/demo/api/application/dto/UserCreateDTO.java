@@ -16,7 +16,7 @@ import java.util.Collection;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
-public class UserCreateDTO implements UserDetails {
+public class UserCreateDTO {
     @NotEmpty
     private String userId;
     @NotEmpty
@@ -40,13 +40,4 @@ public class UserCreateDTO implements UserDetails {
         return toEntity(passwordEncoder.encode(password), passwordEncoder.encode(regNo));
     }
 
-    @Override //권한
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
-
-    @Override //
-    public String getUsername() {
-        return null;
-    }
 }

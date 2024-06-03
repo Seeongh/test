@@ -1,9 +1,7 @@
 package com._3o3.demo.api.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @SequenceGenerator(
@@ -17,6 +15,8 @@ import lombok.Setter;
                 columnNames={"reg_no_enc"}
         )})
 @Getter
+@ToString
+@NoArgsConstructor
 public class User {
 
     //식별자
@@ -39,6 +39,10 @@ public class User {
     //사용자 주민 등록 번호
     @Column(name = "reg_no_enc")
     private String regNo;
+
+    //권한
+    //private RoleType role;
+
 
     @Builder
     public User(Long id, String userId, String password, String name, String regNo) {

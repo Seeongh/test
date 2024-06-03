@@ -3,12 +3,15 @@ package com._3o3.demo.api.infrastructure;
 import com._3o3.demo.api.application.dto.UserSignInDTO;
 import com._3o3.demo.api.domain.User;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Repository
 public class UserRepository {
 
@@ -55,5 +58,22 @@ public class UserRepository {
                 .getResultList();
 
         return userList.stream().findAny();
+    }
+
+    /**
+     * 중복 여부 확인 ( 사용자 아이디)
+     */
+    public Optional<User> findByUserName(String userId) {
+        Optional<User> user = Optional.empty();
+       try {
+             user = Optional.ofNullable(em.createQuery("select u from User u where u.userId = :userId", User.class)
+                     .setParameter("userId", userId)
+                     .getSingleResult());
+        }catch (NoResultException e){
+            user = Optional.empty();
+        }
+
+       log.info("ash user = {}", user.toString());
+       return user;
     }
 }
