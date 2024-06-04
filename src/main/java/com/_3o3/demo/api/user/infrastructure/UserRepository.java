@@ -1,7 +1,7 @@
-package com._3o3.demo.api.infrastructure;
+package com._3o3.demo.api.user.infrastructure;
 
-import com._3o3.demo.api.application.dto.UserSignInDTO;
-import com._3o3.demo.api.domain.User;
+import com._3o3.demo.api.user.application.dto.UserSignInDTO;
+import com._3o3.demo.api.user.domain.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
@@ -73,7 +73,6 @@ public class UserRepository {
             user = Optional.empty();
         }
 
-       log.info("ash user = {}", user.toString());
        return user;
     }
 }

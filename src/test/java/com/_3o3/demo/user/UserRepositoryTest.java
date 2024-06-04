@@ -1,7 +1,8 @@
 package com._3o3.demo.user;
 
-import com._3o3.demo.api.domain.User;
-import com._3o3.demo.api.infrastructure.UserRepository;
+import com._3o3.demo.api.user.domain.User;
+import com._3o3.demo.api.user.infrastructure.UserRepository;
+import com._3o3.demo.util.AES256Util;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +33,8 @@ public class UserRepositoryTest {
             .userId("test")
             .name("testA")
             .password("passwordTest")
-            .regNo("YYMMDD-GABCDEF")
+                .regNoBirth("921108")
+                .regNoEnc(AES256Util.encrypt("1582816"))
             .build();
         //when
 

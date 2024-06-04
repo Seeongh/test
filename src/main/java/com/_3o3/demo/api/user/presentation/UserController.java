@@ -1,13 +1,12 @@
-package com._3o3.demo.api.presentation;
+package com._3o3.demo.api.user.presentation;
 
-import com._3o3.demo.api.application.UserService;
-import com._3o3.demo.api.application.dto.UserCreateDTO;
-import com._3o3.demo.api.application.dto.UserSignInDTO;
+import com._3o3.demo.api.user.application.UserService;
+import com._3o3.demo.api.user.application.dto.UserCreateDTO;
+import com._3o3.demo.api.user.application.dto.UserSignInDTO;
 import com._3o3.demo.common.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -28,6 +27,7 @@ public class UserController {
 
     @PostMapping(value = "/login")
     public ApiResponse<String> login(@Valid @RequestBody UserSignInDTO signDto) {
+
         return userService.login(signDto);
     }
 }

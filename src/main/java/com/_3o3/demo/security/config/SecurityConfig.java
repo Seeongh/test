@@ -1,14 +1,15 @@
 package com._3o3.demo.security.config;
 
-import com._3o3.demo.filter.myFilter;
 import com._3o3.demo.security.Authentication.SignInService;
-import com._3o3.demo.security.jwt.JwtAuthenticationFilter;
-import com._3o3.demo.util.JwtUtil;
+import com._3o3.demo.security.Authentication.jwt.JwtAuthenticationFilter;
+import com._3o3.demo.security.Authentication.provider.CustomUserAuthenticationProvider;
+import com._3o3.demo.security.Authentication.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -18,8 +19,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CorsFilter;
 
 
@@ -31,35 +30,41 @@ public class SecurityConfig {
 
     private final CorsFilter corsFilter;
     private final SignInService signInService;
-    private final JwtUtil jwtUtil;
+    private final JwtTokenProvider jwtTokenProvider;
 
+    private static final String[] ALLOW_LIST = {
+            "/szs/signup", "/szs/login", "/", "swagger-ui/**"
+    };
     private static final String[] AUTH_WHITELIST = {
-            "/szs/signup", "/szs/login", "/szs/scrap", "/szs/refund"
+            "/szs/scrap", "/szs/refund"
     };
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-               // .addFilterBefore(new myFilter(), BasicAuthenticationFilter.class)
+                // .addFilterBefore(new myFilter(), BasicAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilter(corsFilter)
                 .sessionManagement((sessionManagement) ->
-                    sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
-                .addFilterBefore(new JwtAuthenticationFilter(signInService, jwtUtil), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(signInService, jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(
                         AbstractHttpConfigurer::disable
                 )
                 .httpBasic(
                         AbstractHttpConfigurer::disable
                 ).authorizeHttpRequests(authorize -> authorize
-                                .requestMatchers("*/error").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/h2-console/**").permitAll() // GET 요청 허용
-                                .requestMatchers(HttpMethod.POST, "/h2-console/**").permitAll() // GET 요청 허용
-                                .requestMatchers(AUTH_WHITELIST).permitAll()
-                                .anyRequest().authenticated()
+                        .requestMatchers("*/error").permitAll()
+                        .requestMatchers(PathRequest.toH2Console()).permitAll() //h2허용
+                        .requestMatchers(ALLOW_LIST).permitAll() // 로그인 안해도 진입가능
+                        .requestMatchers(AUTH_WHITELIST).authenticated()
+                        .anyRequest().authenticated()
                 );
+//                ).exceptionHandling(exceptionHandling ->
+//                        exceptionHandling.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+//                );
 
 //                .formLogin((formLogin) ->
 //                        formLogin.loginPage("/login")
@@ -80,15 +85,16 @@ public class SecurityConfig {
         return http.build();
     }
 
-
     @Bean
-    public PasswordEncoder bCryptPasswordEncoder(){
+    public PasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 //    @Bean
-//        //스프링 시큐리티의 인증을 담당, 사용자 인증시 앞에서 작성한 UserSecurityService 와 PasswordEncoder 를 사용
-//    AuthenticationManager authenticationManager() throws Exception {
-//       // return authenticationConfiguration.getAuthenticationManager();
+//    AuthenticationManager authenticationManager() {
+//        CustomUserAuthenticationProvider provider =
+//                new CustomUserAuthenticationProvider(signInService, bCryptPasswordEncoder());
+//        return new ProviderManager(provider);
 //    }
 }
 

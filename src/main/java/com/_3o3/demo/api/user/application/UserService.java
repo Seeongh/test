@@ -1,23 +1,24 @@
-package com._3o3.demo.api.application;
+package com._3o3.demo.api.user.application;
 
 
-import com._3o3.demo.api.application.dto.UserCreateDTO;
-import com._3o3.demo.api.application.dto.UserSignInDTO;
-import com._3o3.demo.api.domain.User;
-import com._3o3.demo.api.infrastructure.UserRepository;
+import com._3o3.demo.api.user.application.dto.UserCreateDTO;
+import com._3o3.demo.api.user.application.dto.UserSignInDTO;
+import com._3o3.demo.api.user.domain.User;
+import com._3o3.demo.api.user.infrastructure.UserRepository;
 import com._3o3.demo.common.ApiResponse;
 import com._3o3.demo.common.exception.CustomValidationException;
-import com._3o3.demo.util.JwtUtil;
+import com._3o3.demo.security.Authentication.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -28,7 +29,8 @@ public class UserService {
     //유저 저장공간
     private final UserRepository userRepository;
     private final PasswordEncoder bCryptPasswordEncoder;
-    private final JwtUtil jwtUtil;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
     /**
      * 회원 가입
@@ -41,6 +43,7 @@ public class UserService {
         //DTO -> Entity 로 변경
         //비밀번호, 주소 암호화
         User user = createDto.toEntity(bCryptPasswordEncoder);
+        user.create(); //role부여
 
         validationDuplicateType(user); // 중복 및 오타 검사
 
@@ -59,12 +62,18 @@ public class UserService {
 
     @Transactional
     public ApiResponse<String> login(UserSignInDTO signInDto) {
-
+        log.info("ash userservice" + signInDto.getUserId());
         //존재하는 Id인지, pw가 맞는지 여부 확인
-        LoginAuthenticationVerification(signInDto);
+       LoginAuthenticationVerification(signInDto);
 
         User user = signInDto.toEntity();
-        String accessToken = jwtUtil.createAccessToken(user);
+        //UsernamePasswordAuthenticationToken autenticationToken = new UsernamePasswordAuthenticationToken(user.getUserId(), user.getPassword());
+
+        //실제 검증(사용자 비밀번호 체크)
+        // detailService -> loadUserByUsername 메서드 실행
+        //Authentication authentication = authenticationManagerBuilder.getObject().authenticate(autenticationToken);
+
+        String accessToken = jwtTokenProvider.createAccessToken(user);
 
         return  ApiResponse.of(HttpStatus.OK, accessToken);
     }

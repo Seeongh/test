@@ -10,16 +10,22 @@ spring:
     url: jdbc:h2:mem:testdb
   jpa:
     hibernate:
-      ddl-auto: create #app????? ??? ??? ?? ??
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
 
 # jwt
 jwt:
   expiration_time: 86400000 #1일
   secret: M28zIHNlY3JldCBrZXkgdGVzdCBmb3Igand0IHRva2VuIGdlbmVyYXRpb24=
   #3o3 secret key test for jwt token generation
+
+
 
 # 로깅
 logging:

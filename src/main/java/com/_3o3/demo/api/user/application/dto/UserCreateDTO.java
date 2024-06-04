@@ -1,19 +1,16 @@
-package com._3o3.demo.api.application.dto;
+package com._3o3.demo.api.user.application.dto;
 
-import com._3o3.demo.api.domain.User;
+import com._3o3.demo.api.user.domain.User;
+import com._3o3.demo.util.AES256Util;
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Collection;
 
 @Getter
 @Builder
 @AllArgsConstructor
-
+@Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class UserCreateDTO {
@@ -26,18 +23,21 @@ public class UserCreateDTO {
     @NotEmpty
     private String regNo;
 
-    public User toEntity(String passwordEnc, String regNoEnc) {
+    public User toEntity(String passwordEnc) {
+        String[] regData = regNo.split("-");
+
         return User
                 .builder()
                 .userId(userId)
                 .password(passwordEnc)
                 .name(name)
-                .regNo(regNoEnc)
+                .regNoBirth(regData[0])
+                .regNoEnc(AES256Util.encrypt(regData[1]))
                 .build();
     }
 
     public User toEntity(PasswordEncoder passwordEncoder) {
-        return toEntity(passwordEncoder.encode(password), passwordEncoder.encode(regNo));
+        return toEntity(passwordEncoder.encode(password));
     }
 
 }

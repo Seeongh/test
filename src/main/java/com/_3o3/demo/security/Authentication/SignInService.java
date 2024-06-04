@@ -1,16 +1,15 @@
 package com._3o3.demo.security.Authentication;
 
-import com._3o3.demo.api.application.dto.UserSignInDTO;
-import com._3o3.demo.api.domain.User;
-import com._3o3.demo.api.infrastructure.UserRepository;
+import com._3o3.demo.api.user.domain.User;
+import com._3o3.demo.api.user.infrastructure.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SignInService  implements UserDetailsService {
@@ -19,7 +18,8 @@ public class SignInService  implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-      User user = Optional.ofNullable(userRepository.findByUserName(username))
+      log.info("ash userDetailService -> loadUserByUserName {}", username);
+      User user = userRepository.findByUserName(username)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하는 사용자가 없습니다."));
 
         return new SignInDetails(user);

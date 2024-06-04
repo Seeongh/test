@@ -1,7 +1,7 @@
-package com._3o3.demo.api.application.dto;
+package com._3o3.demo.api.user.application.dto;
 
 
-import com._3o3.demo.api.domain.User;
+import com._3o3.demo.api.user.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +14,8 @@ public class UserDTO {
     private String userId;
     private String password;
     private String name;
-    private String regNo;
+    private String regNoBirth;
+    private String regNoEnc;
 
     public UserDTO of(User user) {
         return UserDTO
@@ -22,7 +23,8 @@ public class UserDTO {
                 .userId(user.getUserId())
                 .password(user.getPassword())
                 .name(user.getName())
-                .regNo(user.getRegNo())
+                .regNoBirth(user.getRegNoBirth())
+                .regNoEnc(user.getRegNoEnc())
                 .build();
     }
 }

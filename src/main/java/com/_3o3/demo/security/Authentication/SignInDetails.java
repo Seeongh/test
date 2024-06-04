@@ -1,12 +1,18 @@
 package com._3o3.demo.security.Authentication;
 
-import com._3o3.demo.api.application.dto.UserSignInDTO;
-import com._3o3.demo.api.domain.User;
+import com._3o3.demo.api.user.domain.User;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+@Slf4j
+@ToString
 public class SignInDetails implements UserDetails {
 
     private final User user;
@@ -16,12 +22,11 @@ public class SignInDetails implements UserDetails {
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-//        Collection<String> authorities = new ArrayList<>();
-//        signInDto.getRoleList().forEach( r-> {
-//            authorities.add(()->r);
-//        });
-//        return authorities;
-        return null;
+
+        log.info("ash signindetails getauthorities");
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("USER"));
+        return authorities;
     }
 
     @Override
@@ -33,4 +38,6 @@ public class SignInDetails implements UserDetails {
     public String getUsername() {
         return user.getUserId();
     }
+
+
 }

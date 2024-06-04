@@ -1,6 +1,6 @@
-package com._3o3.demo.api.application.dto;
+package com._3o3.demo.api.user.application.dto;
 
-import com._3o3.demo.api.domain.User;
+import com._3o3.demo.api.user.domain.User;
 import lombok.Getter;
 
 import java.util.ArrayList;
