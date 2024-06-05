@@ -1,6 +1,6 @@
 package com._3o3.demo.security.Authentication;
 
-import com._3o3.demo.api.user.domain.User;
+import com._3o3.demo.api.member.domain.Member;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,10 +15,10 @@ import java.util.List;
 @ToString
 public class SignInDetails implements UserDetails {
 
-    private final User user;
+    private final Member member;
 
-    public SignInDetails( User user) {
-        this.user = user;
+    public SignInDetails( Member member) {
+        this.member = member;
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -31,12 +31,12 @@ public class SignInDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return member.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getUserId();
+        return member.getUserId();
     }
 
 

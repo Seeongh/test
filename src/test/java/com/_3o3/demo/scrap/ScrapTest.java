@@ -1,15 +1,13 @@
 package com._3o3.demo.scrap;
 
-import com._3o3.demo.api.tax.application.dto.RequestBodyDto;
+import com._3o3.demo.api.finantial.application.dto.webClientDto.RequestBodyDto;
 import com._3o3.demo.util.WebClientUtil;
-import org.hibernate.dialect.TiDBDialect;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;

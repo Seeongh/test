@@ -1,6 +1,6 @@
 package com._3o3.demo.security;
 
-import com._3o3.demo.api.user.application.UserService;
+import com._3o3.demo.api.member.application.MemberService;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class PasswordEncoderTest {
 
     @Autowired
-    UserService userService;
+    MemberService userService;
 
     @Autowired
     PasswordEncoder bCryptPasswordEncoder;

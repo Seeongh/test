@@ -1,6 +1,6 @@
 package com._3o3.demo.security.Authentication.provider;
 
-import com._3o3.demo.api.user.domain.User;
+import com._3o3.demo.api.member.domain.Member;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -31,18 +31,18 @@ public class JwtTokenProvider {
     /**
      * Access Token 생성
      */
-    public String createAccessToken(User user) {
+    public String createAccessToken(Member member) {
         log.info("jwtTokenProvider createAccessToken");
-        return createToken(user, accessTokenExpTime);
+        return createToken(member, accessTokenExpTime);
     }
 
-    private String createToken(User user, Long accessTokenExpTime) {
+    private String createToken(Member member, Long accessTokenExpTime) {
         log.info("jwtTokenProvider createToken");
 
         Claims claims = Jwts.claims();
-        claims.put("userId", user.getUserId());
-        claims.put("name", user.getName());
-        claims.put("role", user.getRole());
+        claims.put("userId", member.getUserId());
+        claims.put("name", member.getName());
+        claims.put("role", member.getRole());
 
         ZonedDateTime now = ZonedDateTime.now();
         ZonedDateTime tokenValidity = now.plusSeconds(accessTokenExpTime);
