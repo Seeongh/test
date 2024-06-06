@@ -8,6 +8,7 @@ import com._3o3.demo.common.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -21,12 +22,12 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping(value = "/signup", consumes = "application/json")
+    @PostMapping(value = "/signup", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<Long> join(@Valid  @RequestBody MemberCreateDTO createDto) {
         return memberService.join(createDto);
     }
 
-    @PostMapping(value = "/login")
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse<TockenDTO> login(@Valid @RequestBody MemberSignInDTO signDto) {
         return memberService.login(signDto);
     }
