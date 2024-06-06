@@ -1,4 +1,4 @@
-package com._3o3.demo.api.finantial.application.dto;
+package com._3o3.demo.api.financial.application.dto;
 
 import lombok.*;
 

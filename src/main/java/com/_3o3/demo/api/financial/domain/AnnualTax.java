@@ -1,4 +1,4 @@
-package com._3o3.demo.api.finantial.domain;
+package com._3o3.demo.api.financial.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -22,24 +22,28 @@ public class AnnualTax {
     @Column(name = "annual_tax_id")
     private Long id;
 
-    @Column(name = "calculated_tax_amount")
-    private BigDecimal calculatedTaxAmount;
+    //산출세액
+    @Column(name = "calculated_tax")
+    private BigDecimal calculatedTax;
 
+    //과세표준
     @Column(name = "tax_base")
-    private BigDecimal taxBase;
+    private BigDecimal taxIncome;
 
-    @Column(name = "determined_tax_amount")
-    private BigDecimal determinedTaxAmount;
+    //결정세액
+    @Column(name = "final_tax_amount")
+    private BigDecimal finalTaxAmount;
+
 
     @Column(name = "tax_calculation_year")
     private LocalDate taxCalculationYear;
 
     @Builder
-    public AnnualTax(Long id, BigDecimal calculatedTaxAmount, BigDecimal taxBase, BigDecimal determinedTaxAmount, LocalDate taxCalculationYear) {
+    public AnnualTax(Long id, BigDecimal calculatedTax, BigDecimal taxIncome, BigDecimal finalTaxAmount, LocalDate taxCalculationYear) {
         this.id = id;
-        this.calculatedTaxAmount = calculatedTaxAmount;
-        this.taxBase = taxBase;
-        this.determinedTaxAmount = determinedTaxAmount;
+        this.calculatedTax = calculatedTax;
+        this.taxIncome = taxIncome;
+        this.finalTaxAmount = finalTaxAmount;
         this.taxCalculationYear = taxCalculationYear;
     }
 }

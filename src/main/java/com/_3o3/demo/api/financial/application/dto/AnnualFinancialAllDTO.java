@@ -1,8 +1,8 @@
-package com._3o3.demo.api.finantial.application.dto;
+package com._3o3.demo.api.financial.application.dto;
 
-import com._3o3.demo.api.finantial.domain.AnnualFinancial;
-import com._3o3.demo.api.finantial.domain.IncomeDeduction;
-import com._3o3.demo.api.finantial.domain.TaxDeduction;
+import com._3o3.demo.api.financial.domain.AnnualFinancial;
+import com._3o3.demo.api.financial.domain.IncomeDeduction;
+import com._3o3.demo.api.financial.domain.TaxDeduction;
 import com._3o3.demo.api.member.domain.Member;
 import lombok.*;
 

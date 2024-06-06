@@ -4,14 +4,14 @@ INSERT INTO MEMBER_STANDARD (name, reg_no_birth, reg_no_enc) VALUES ('손권', '
 INSERT INTO MEMBER_STANDARD (name, reg_no_birth, reg_no_enc) VALUES ('유비', '790411','R91mJKvqoE74fgncg1aNRw==');
 INSERT INTO MEMBER_STANDARD (name, reg_no_birth, reg_no_enc) VALUES ('조조', '810326','H/Is9AKGs89q6wklTbFA2w==');
 
-INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(0,0,0,6)
-INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(1400,84,1400,15)
-INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(5000,624,5000,24)
-INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(8800,1536,8800,35)
-INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(15000,3706,15000,38)
-INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(30000,9406,30000,40)
-INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(50000,17406,50000,42)
-INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(100000,38406,100000,45)
+INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(0,0,0,0.06)
+INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(14000000,840000,14000000,0.15)
+INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(50000000,6240000,50000000,0.24)
+INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(88000000,15360000,88000000,0.35)
+INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(150000000,37060000,150000000,0.38)
+INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(300000000,94060000,300000000,0.40)
+INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(500000000,174060000,500000000,0.42)
+INSERT INTO TAX_RATE (tax_standard, additional_amount, excess_amount_threshold, tax_rate_percentage) VALUES(1000000000,384060000,1000000000,0.45)
 
 
 

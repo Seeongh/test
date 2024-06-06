@@ -1,4 +1,4 @@
-package com._3o3.demo.api.finantial.domain;
+package com._3o3.demo.api.financial.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;

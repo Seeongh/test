@@ -12,17 +12,8 @@ public class ApiResponse<T> {
 
     private int httpStatus;
     private String responseMessage;
-    private String accessToken;
     private T data;
 
-    /**
-     * accessToken 존재시 사용
-     */
-    public ApiResponse(HttpStatus httpStatus, String responseMessage, String accessToken) {
-        this.httpStatus = httpStatus.value();
-        this.responseMessage = responseMessage;
-        this.accessToken = accessToken;
-    }
 
     public ApiResponse(HttpStatus httpStatus, String responseMessage, T data) {
         this.httpStatus = httpStatus.value();
@@ -37,11 +28,6 @@ public class ApiResponse<T> {
         return new ApiResponse<>(httpStatus, responseMessage, data);
     }
 
-    public static <T> ApiResponse<T> of(HttpStatus httpStatus, String accessToken) {
-        String responseMessage = getCustomMessageForStatusCode(httpStatus);
-
-        return new ApiResponse<>(httpStatus, responseMessage, accessToken);
-    }
     public static <T> ApiResponse<T> error(HttpStatus httpStatus, String message) {
         log.info("Response failed  httpStatus, message = {}, {}", httpStatus, message) ;
         return new ApiResponse<>(httpStatus, message, null);

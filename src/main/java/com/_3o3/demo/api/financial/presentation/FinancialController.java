@@ -1,5 +1,5 @@
-package com._3o3.demo.api.finantial.presentation;
-import com._3o3.demo.api.finantial.application.FinancialService;
+package com._3o3.demo.api.financial.presentation;
+import com._3o3.demo.api.financial.application.FinancialService;
 import com._3o3.demo.common.ApiResponse;
 import com._3o3.demo.security.Authentication.SignInDetails;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
 
 /**
  * 회원 가입 및 로그인 처리
@@ -29,7 +31,7 @@ public class FinancialController {
     }
 
     @GetMapping(value="/refund")
-    public ApiResponse<String> refund(@AuthenticationPrincipal SignInDetails signInDetails) {
+    public ApiResponse<Map<String,String>> refund(@AuthenticationPrincipal SignInDetails signInDetails) {
         return financialService.refund(signInDetails);
     }
 }

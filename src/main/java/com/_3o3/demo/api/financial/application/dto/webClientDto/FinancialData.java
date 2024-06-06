@@ -1,4 +1,4 @@
-package com._3o3.demo.api.finantial.application.dto.webClientDto;
+package com._3o3.demo.api.financial.application.dto.webClientDto;
 
 import com._3o3.demo.util.CustomBigDecimalDeserializer;
 import com.fasterxml.jackson.annotation.JsonProperty;

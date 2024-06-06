@@ -1,6 +1,6 @@
-package com._3o3.demo.api.finantial.application.dto;
+package com._3o3.demo.api.financial.application.dto;
 
-import com._3o3.demo.api.finantial.domain.TaxDeduction;
+import com._3o3.demo.api.financial.domain.TaxDeduction;
 import lombok.*;
 
 import java.math.BigDecimal;

@@ -1,6 +1,6 @@
-package com._3o3.demo.api.finantial.application.dto;
+package com._3o3.demo.api.financial.application.dto;
 
-import com._3o3.demo.api.finantial.domain.AnnualFinancial;
+import com._3o3.demo.api.financial.domain.AnnualFinancial;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

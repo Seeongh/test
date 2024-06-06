@@ -3,6 +3,7 @@ package com._3o3.demo.api.member.application;
 
 import com._3o3.demo.api.member.application.dto.MemberCreateDTO;
 import com._3o3.demo.api.member.application.dto.MemberSignInDTO;
+import com._3o3.demo.api.member.application.dto.TockenDTO;
 import com._3o3.demo.api.member.domain.Member;
 import com._3o3.demo.api.member.infrastructure.MemberRepository;
 import com._3o3.demo.common.ApiResponse;
@@ -60,7 +61,7 @@ public class MemberService {
     }
 
     @Transactional
-    public ApiResponse<String> login(MemberSignInDTO signInDto) {
+    public ApiResponse<TockenDTO> login(MemberSignInDTO signInDto) {
         log.info("ash userservice" + signInDto.getUserId());
         //존재하는 Id인지, pw가 맞는지 여부 확인
        LoginAuthenticationVerification(signInDto);
@@ -73,8 +74,10 @@ public class MemberService {
         //Authentication authentication = authenticationManagerBuilder.getObject().authenticate(autenticationToken);
 
         String accessToken = jwtTokenProvider.createAccessToken(member);
-
-        return  ApiResponse.of(HttpStatus.OK, accessToken);
+        TockenDTO tockenDTO = TockenDTO.builder()
+                            .accessToken(accessToken)
+                            .build();
+        return  ApiResponse.of(HttpStatus.OK, tockenDTO);
     }
 
     private void LoginAuthenticationVerification(MemberSignInDTO signInDTO) {

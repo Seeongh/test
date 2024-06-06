@@ -3,6 +3,7 @@ package com._3o3.demo.api.member.presentation;
 import com._3o3.demo.api.member.application.MemberService;
 import com._3o3.demo.api.member.application.dto.MemberCreateDTO;
 import com._3o3.demo.api.member.application.dto.MemberSignInDTO;
+import com._3o3.demo.api.member.application.dto.TockenDTO;
 import com._3o3.demo.common.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class MemberController {
     }
 
     @PostMapping(value = "/login")
-    public ApiResponse<String> login(@Valid @RequestBody MemberSignInDTO signDto) {
+    public ApiResponse<TockenDTO> login(@Valid @RequestBody MemberSignInDTO signDto) {
         return memberService.login(signDto);
     }
 }

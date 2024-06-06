@@ -1,4 +1,4 @@
-package com._3o3.demo.api.finantial.domain;
+package com._3o3.demo.api.financial.domain;
 
 import com._3o3.demo.api.member.domain.Member;
 import jakarta.persistence.*;

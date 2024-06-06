@@ -1,6 +1,6 @@
 package com._3o3.demo.scrap;
 
-import com._3o3.demo.api.finantial.application.dto.webClientDto.RequestBodyDto;
+import com._3o3.demo.api.financial.application.dto.webClientDto.RequestBodyDto;
 import com._3o3.demo.util.WebClientUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
