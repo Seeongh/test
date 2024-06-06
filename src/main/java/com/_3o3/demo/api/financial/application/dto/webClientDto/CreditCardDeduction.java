@@ -2,6 +2,7 @@ package com._3o3.demo.api.financial.application.dto.webClientDto;
 
 import lombok.Getter;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +10,6 @@ import java.util.Map;
 public class CreditCardDeduction {
 
     private List<Map<String, String>> month;
-    private int year;
+    private LocalDate year;
 
 }

@@ -22,8 +22,7 @@ public class SignInDetails implements UserDetails {
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        log.info("ash signindetails getauthorities");
+        log.info("signindetails getauthorities");
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("USER"));
         return authorities;
@@ -38,6 +37,5 @@ public class SignInDetails implements UserDetails {
     public String getUsername() {
         return member.getUserId();
     }
-
 
 }

@@ -17,7 +17,6 @@ public class CustomBigDecimalDeserializer extends JsonDeserializer<BigDecimal> {
             throws IOException, JsonProcessingException {
         String value = p.getText();
 
-        log.info("ash deserialize : {}", value);
         if (value != null) {
             value = value.replace(",", "");
         }

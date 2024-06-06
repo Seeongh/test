@@ -1,4 +1,4 @@
-package com._3o3.demo.security.config;
+package com._3o3.demo.security.handler;
 
 import com._3o3.demo.common.ApiResponse;
 import com._3o3.demo.common.exception.handler.ErrorCode;
@@ -21,12 +21,18 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     private ObjectMapper mapper = new ObjectMapper();
 
-    private static ApiResponse<String> exceptionResponse =
-            new ApiResponse<>(HttpStatus.UNAUTHORIZED, "UnAuthorized!!!", null);
-
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        log.info("ash entry point exception occur {}", authException.getMessage());
+        log.info(" entry point exception occur {}", authException.getMessage());
+        String exceptionMessage = (String)request.getAttribute("exception");
+
+        ApiResponse<String> exceptionResponse = null;
+        if(exceptionMessage == null) {
+            exceptionResponse =ApiResponse.of(HttpStatus.UNAUTHORIZED, authException.getMessage());
+        }
+        else{
+            exceptionResponse =  ApiResponse.of(HttpStatus.UNAUTHORIZED, exceptionMessage);
+        }
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.UNAUTHORIZED.value());

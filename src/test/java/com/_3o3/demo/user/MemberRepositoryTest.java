@@ -1,8 +1,9 @@
 package com._3o3.demo.user;
 
 import com._3o3.demo.api.member.domain.Member;
+import com._3o3.demo.api.member.domain.MemberStandard;
 import com._3o3.demo.api.member.infrastructure.MemberRepository;
-import com._3o3.demo.api.member.infrastructure.MemberRepositoryImpl;
+import com._3o3.demo.api.member.infrastructure.MemberStandardRepository;
 import com._3o3.demo.util.AES256Util;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -19,104 +20,101 @@ public class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
+    @Autowired
+    MemberStandardRepository memberStandardRepositoryRepository;
+  @Test
+  public void 회원가입_승인된_사용자() throws Exception {
+      Member member = Member.builder()
+              .userId("test")
+              .name("동탁")
+              .password("passwordTest")
+              .regNoBirth("921108")
+              .regNoEnc(AES256Util.encrypt("1582816"))
+              .build();
 
-    /**
-     * 1.H2-JPA 연동테스트
-     * 2. 회원가입
-     **/
+      MemberStandard getMember = memberStandardRepositoryRepository.findByNameRegNo(member.getName(),member.getRegNoBirth(), member.getRegNoEnc())
+              .orElse(null);
 
-    //@Rollback(false)
+      System.out.println(getMember.toString());
+      Assertions.assertThat(getMember).isInstanceOf(MemberStandard.class);
+
+   }
+
     @Test
-    @Transactional
-    public void testUser() throws Exception {
-        //given
+    public void 회원가입_승인되지않은_사용자() throws Exception {
         Member member = Member.builder()
-            .userId("test")
-            .name("testA")
-            .password("passwordTest")
+                .userId("test")
+                .name("test")
+                .password("passwordTest")
                 .regNoBirth("921108")
                 .regNoEnc(AES256Util.encrypt("1582816"))
-            .build();
+                .build();
+
+        MemberStandard getMember = memberStandardRepositoryRepository.findByNameRegNo(member.getName(),member.getRegNoBirth(), member.getRegNoEnc())
+                .orElse(null);
+ ;
+        Assertions.assertThat(getMember).isNull();
+
+    }
+
+   @Test
+   public void userId가_중복된_회원가입() throws Exception {
+       //given
+       Member member = Member.builder()
+               .userId("test")
+               .name("동탁")
+               .password("passwordTest")
+               .regNoBirth("921108")
+               .regNoEnc(AES256Util.encrypt("1582816"))
+               .build();
+       Member savedMember = memberRepository.save(member);
+
+       //when
+       //가입 승인된 회원이지만 id가 중복됨
+       Member newMember = Member.builder()
+               .userId("test")
+               .name("관우")
+               .password("passwordTest")
+               .regNoBirth("681108")
+               .regNoEnc(AES256Util.encrypt("1582816"))
+               .build();
+       //then
+       Member getMember = memberRepository.findByUserIdOrRegNoBirthAndRegNoEnc(newMember.getUserId(), newMember.getRegNoBirth(), newMember.getRegNoEnc())
+               .orElse(null);
+
+       //관우 정보를 넣어서 동탁이나와야함(id가 같아서)
+       Assertions.assertThat(getMember.getName()).isEqualTo("동탁");
+       Assertions.assertThat(getMember.getName()).isEqualTo(savedMember.getName());
+    }
+
+    @Test
+    public void 주민번호_중복된_회원가입() throws Exception {
+        //given
+        Member member = Member.builder()
+                .userId("test")
+                .name("동탁")
+                .password("passwordTest")
+                .regNoBirth("921108")
+                .regNoEnc(AES256Util.encrypt("1582816"))
+                .build();
+        Member savedMember = memberRepository.save(member);
+
         //when
-
-        //Long savedId = memberRepository.save(member);
-        //Member findMember = memberRepository.findById(savedId);
+        //가입 승인된 회원이지만 주민번호가 중복됨
+        Member newMember = Member.builder()
+                .userId("secondTest")
+                .name("동탁")
+                .password("passwordTest")
+                .regNoBirth("921108")
+                .regNoEnc(AES256Util.encrypt("1582816"))
+                .build();
         //then
-     //   Assertions.assertThat(findMember.getId()).isEqualTo(savedId);
-      //  Assertions.assertThat(findMember.getName()).isEqualTo(member.getName());
-     }
+        Member getMember = memberRepository.findByUserIdOrRegNoBirthAndRegNoEnc(newMember.getUserId(), newMember.getRegNoBirth(), newMember.getRegNoEnc())
+                .orElse(null);
 
-     @Test
-     public void 암호화_테스트() throws Exception {
-         //given
-         System.out.println("ash aes =" +AES256Util.encrypt("1582816"));
-         System.out.println("ash aes =" +AES256Util.encrypt("1582816"));
-         System.out.println("ash aes =" +AES256Util.encrypt("2455116"));
-         System.out.println("ash aes =" +AES256Util.encrypt("1656116"));
-         System.out.println("ash aes =" +AES256Util.encrypt("2715702"));
+        //관우 정보를 넣어서 동탁이나와야함(주민번호가 같아서)
+        Assertions.assertThat(getMember.getName()).isEqualTo("동탁");
+        Assertions.assertThat(getMember.getName()).isEqualTo(savedMember.getName());
+    }
 
-
-
-
-
-         //when
-
-         //then
-
-      }
-
-      @Test
-      public void repository_테스트() throws Exception {
-          //given
-          Member member = Member.builder()
-                  .userId("test")
-                  .name("testA")
-                  .password("passwordTest")
-                  .regNoBirth("921108")
-                  .regNoEnc(AES256Util.encrypt("1582816"))
-                  .build();
-          //when
-          memberRepository.save(member);
-          String password = String.valueOf(memberRepository.findByUserId("test"));
-          System.out.println(password);
-
-          //then
-
-       }
 }
-//@SpringBootTest
-//@Transactional
-//@Rollback(false)
-//class UserRepositoryTest {
-//
-//    @Autowired
-//    UserRepository userRepository;
-//
-//    @Test
-//    void findUsernameAndAddressTest() {
-//
-//        // given
-//        String jamesUsername = "James";
-//        String maryUsername = "Mary";
-//
-//        User james = User.builder()
-//                .username(jamesUsername)
-//                .age(25)
-//                .build();
-//
-//        User mary = User.builder()
-//                .username(maryUsername)
-//                .age(30)
-//                .build();
-//
-//        userRepository.save(james);
-//        userRepository.save(mary);
-//
-//        // when
-//        List<User> optionalUsers = userRepository.findByLetterWithConditions('a', 23);
-//
-//        // then
-//        assertEquals(optionalUsers.get(0).getUsername(), jamesUsername);
-//        assertEquals(optionalUsers.get(1).getUsername(), maryUsername);
-//    }
-//}

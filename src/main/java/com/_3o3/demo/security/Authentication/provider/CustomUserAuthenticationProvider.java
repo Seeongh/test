@@ -1,6 +1,8 @@
 package com._3o3.demo.security.Authentication.provider;
 import java.util.Collection;
 
+import com._3o3.demo.api.member.application.dto.MemberSignInDTO;
+import com._3o3.demo.api.member.domain.Member;
 import com._3o3.demo.security.Authentication.SignInDetails;
 import com._3o3.demo.security.Authentication.SignInService;
 import lombok.extern.slf4j.Slf4j;
@@ -35,8 +37,6 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
      */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-
-        log.info("ash provider get in {}", authentication.getAuthorities());
         UsernamePasswordAuthenticationToken authToken =
                 (UsernamePasswordAuthenticationToken) authentication;
 
@@ -59,7 +59,6 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
 
         Collection<? extends GrantedAuthority> authorities = signInDetails.getAuthorities();
 
-        log.info("ash login = {}.{},{}", signInDetails.getUsername(), signInDetails.getPassword(), signInDetails.getAuthorities() );
         authToken = UsernamePasswordAuthenticationToken
                 .authenticated(signInDetails.getUsername(), pswdEncpt, authorities);
 
@@ -75,7 +74,7 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
 
     private void verifyCredentials(String credentials, String password) {
         if (!passwordEncoder.matches(credentials, password)) {
-            throw new BadCredentialsException("Invalid User password"); // TODO message properties 적용
+            throw new BadCredentialsException("비밀번호가 틀렸습니다."); // TODO message properties 적용
         }
     }
 

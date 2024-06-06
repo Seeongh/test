@@ -1,9 +1,10 @@
 package com._3o3.demo.security.config;
 
 import com._3o3.demo.security.Authentication.SignInService;
-import com._3o3.demo.security.Authentication.jwt.JwtAuthenticationFilter;
+import com._3o3.demo.security.Authentication.filter.JwtAuthenticationFilter;
 import com._3o3.demo.security.Authentication.provider.CustomUserAuthenticationProvider;
 import com._3o3.demo.security.Authentication.provider.JwtTokenProvider;
+import com._3o3.demo.security.handler.CustomAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -43,9 +44,9 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                // .addFilterBefore(new myFilter(), BasicAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .addFilter(corsFilter)
+                //jwt사용
                 .sessionManagement((sessionManagement) ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
@@ -59,22 +60,18 @@ public class SecurityConfig {
                         .requestMatchers("*/error").permitAll()
                         .requestMatchers(PathRequest.toH2Console()).permitAll() //h2허용
                         .requestMatchers(ALLOW_LIST).permitAll() // 로그인 안해도 진입가능
-                        .requestMatchers(AUTH_WHITELIST).authenticated()
+                        .requestMatchers(AUTH_WHITELIST).authenticated() //
                         .anyRequest().authenticated()
+                )
+               .exceptionHandling(exceptionHandling ->
+                        exceptionHandling.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 );
-//                ).exceptionHandling(exceptionHandling ->
-//                        exceptionHandling.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
-//                );
 
-//                .formLogin((formLogin) ->
-//                        formLogin.loginPage("/login")
-//                                .defaultSuccessUrl("/articles")
 //                ).logout((logout) ->
 //                        logout.logoutSuccessUrl("/login")
 //                                .invalidateHttpSession(true)
 //                );
 
-        //H2 설정
         http
                 .headers((headerConfig) ->
                         headerConfig.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin
@@ -90,12 +87,12 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    AuthenticationManager authenticationManager() {
-//        CustomUserAuthenticationProvider provider =
-//                new CustomUserAuthenticationProvider(signInService, bCryptPasswordEncoder());
-//        return new ProviderManager(provider);
-//    }
+    @Bean
+    AuthenticationManager authenticationManager() {
+        CustomUserAuthenticationProvider provider =
+                new CustomUserAuthenticationProvider(signInService, bCryptPasswordEncoder());
+        return new ProviderManager(provider);
+    }
 }
 
 

@@ -1,9 +1,11 @@
 package com._3o3.demo.security.Authentication;
 
+import com._3o3.demo.api.member.application.dto.MemberSignInDTO;
 import com._3o3.demo.api.member.domain.Member;
 import com._3o3.demo.api.member.infrastructure.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,10 +19,10 @@ public class SignInService  implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-      log.info("ash userDetailService -> loadUserByUserName {}", username);
-      Member member = memberRepository.findByUserId(username)
-                .orElseThrow(() -> new UsernameNotFoundException("존재하는 사용자가 없습니다."));
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+      log.info("SignInService :: loadUserByUserName");
+         Member member = memberRepository.findByUserId(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("가입하지 않은 사용자."));
 
         return new SignInDetails(member);
     }

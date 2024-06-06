@@ -107,7 +107,7 @@ public class FinancialService {
         AnnualFinancialCreateDTO annualFinancialCreateDTO = AnnualFinancialCreateDTO
                                 .builder()
                                 .annualTotalAmount(response.getData().getTotalIncome())
-                                .incomeYear(LocalDate.ofEpochDay(deduction.getCreditCardDeduction().getYear()))
+                                .incomeYear(deduction.getCreditCardDeduction().getYear())
                                 .build();
 
         //소득공제 dto

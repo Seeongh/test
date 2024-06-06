@@ -23,8 +23,7 @@ public class ApiResponse<T> {
 
     public static <T> ApiResponse<T> of(HttpStatus httpStatus, T data) {
         String responseMessage = getCustomMessageForStatusCode(httpStatus);
-
-        log.info("Response status, message, data = {}, {}, {}", httpStatus, responseMessage, data);
+        log.info("Response status, data = {}, {}", httpStatus, data);
         return new ApiResponse<>(httpStatus, responseMessage, data);
     }
 
@@ -37,6 +36,8 @@ public class ApiResponse<T> {
         switch (httpStatus) {
             case OK :
                 return "성공 했습니다." ;
+            case UNAUTHORIZED:
+                return "인증 오류가 발생했습니다.";
             default :
                 return "";
         }

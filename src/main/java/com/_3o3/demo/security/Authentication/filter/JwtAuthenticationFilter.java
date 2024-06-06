@@ -1,4 +1,4 @@
-package com._3o3.demo.security.Authentication.jwt;
+package com._3o3.demo.security.Authentication.filter;
 
 import com._3o3.demo.common.exception.handler.ErrorCode;
 import com._3o3.demo.security.Authentication.SignInService;
@@ -35,11 +35,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //JWT 헤더 있는 경우
             if((authorizationHeader != null) && (authorizationHeader.startsWith("Bearer "))) {
                 String token = authorizationHeader.substring(7);
-                log.info("ash jwt in {}", token);
+
                 //JWT 유효성 검증
                 if(jwtTokenProvider.validateToken(token)) {
                     String userId = jwtTokenProvider.getUserId(token);
-                    log.info("ash jwt getUeserId = {}", userId);
+
                     //유저와 토큰 일치 시 userDetails 생성
                     UserDetails userDetails = signInService.loadUserByUsername(userId);
 
@@ -55,17 +55,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 }
             }
-        } catch (SecurityException | MalformedJwtException e) {
-            request.setAttribute("exception", ErrorCode.WRONG_TYPE_TOKEN.getCode());
+        } catch (SecurityException | MalformedJwtException | IllegalArgumentException e) {
+            request.setAttribute("exception", ErrorCode.WRONG_TYPE_TOKEN.getMessage());
         } catch (ExpiredJwtException e) {
-            request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN.getCode());
+            request.setAttribute("exception", ErrorCode.EXPIRED_TOKEN.getMessage());
         } catch (UnsupportedJwtException e) {
-            request.setAttribute("exception", ErrorCode.UNSUPPORTED_TOKEN.getCode());
-        } catch (IllegalArgumentException e) {
-            request.setAttribute("exception", ErrorCode.WRONG_TYPE_TOKEN.getCode());
+            request.setAttribute("exception", ErrorCode.UNSUPPORTED_TOKEN.getMessage());
         } catch (Exception e) {
-            request.setAttribute("exception", ErrorCode.UNKNOWN_ERROR.getCode());
+            request.setAttribute("exception", ErrorCode.UNKNOWN_ERROR.getMessage());
         }
+
         filterChain.doFilter(request, response);
     }
 }

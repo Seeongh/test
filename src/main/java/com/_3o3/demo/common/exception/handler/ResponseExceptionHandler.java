@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.security.SignatureException;
+
 @Slf4j
 @RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -26,10 +28,5 @@ public class ResponseExceptionHandler {
         return ApiResponse.error(HttpStatus.CONFLICT, e.getMessage());
     }
 
-    @ExceptionHandler({ExpiredJwtException.class, io.jsonwebtoken.security.SecurityException.class, MalformedJwtException.class, UnsupportedJwtException.class})
-    public ApiResponse<Object> expJwtTokenErr(ExpiredJwtException e) {
-        e.getStackTrace();
-        return ApiResponse.error(HttpStatus.UNAUTHORIZED, e.getMessage());
-    }
 
 }

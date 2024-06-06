@@ -59,14 +59,10 @@ public class JwtTokenProvider {
      * Token에서 userId 추출
      */
     public String getUserId(String token) {
-
-        log.info("jwtTokenProvider getUserId  token : {}", token);
         return parseClaims(token).get("userId", String.class);
     }
 
     private Claims parseClaims(String accessToken) {
-
-        log.info("jwtTokenProvider parseClaims accessToken ={}", accessToken);
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
         } catch (ExpiredJwtException e) {
@@ -78,26 +74,8 @@ public class JwtTokenProvider {
      * JWT 검증
      */
     public boolean validateToken(String token) {
-
         log.info("jwtTokenProvider validateToken");
-        try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
-            return true;
-        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("invalid JWT Token", e);
-        } catch (ExpiredJwtException e) {
-            log.info("Expired JWT Token", e);
-            throw e;
-        } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT Token", e);
-            throw new UnsupportedJwtException("Unsupported JWT Token");
-        } catch (IllegalArgumentException e) {
-            log.info("JWT claims string is empty.", e);
-            throw new UnsupportedJwtException("JWT claims string is empty");
-        } catch (Exception e) {
-            throw new UnsupportedJwtException("JWT Unkown Error");
-        }
-
-        return false;
+        Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+        return true;
     }
 }
