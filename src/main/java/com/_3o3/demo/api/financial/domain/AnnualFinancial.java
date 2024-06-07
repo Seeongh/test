@@ -19,7 +19,6 @@ import static jakarta.persistence.FetchType.LAZY;
  */
 @Entity
 @Getter
-@ToString
 @NoArgsConstructor
 public class AnnualFinancial {
 
@@ -34,7 +33,7 @@ public class AnnualFinancial {
     private Year incomeYear;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "member_id")
     private Member member;
 
     @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)

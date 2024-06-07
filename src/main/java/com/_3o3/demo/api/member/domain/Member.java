@@ -1,7 +1,11 @@
 package com._3o3.demo.api.member.domain;
 
+import com._3o3.demo.api.financial.domain.AnnualFinancial;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "MEMBER" , uniqueConstraints = {
@@ -17,6 +21,7 @@ public class Member {
     //식별자
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
+    @Column(name = "member_id")
     private Long id;
 
     //사용자 아이디
@@ -42,9 +47,12 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
+    @OneToMany(mappedBy = "member")
+    private List<AnnualFinancial> annualFinancialList = new ArrayList<>();
+
 
     @Builder
-    public Member(Long id, String userId, String password, String name, String regNoBirth, String regNoEnc, RoleType role) {
+    public Member(Long id, String userId, String password, String name, String regNoBirth, String regNoEnc, RoleType role, List<AnnualFinancial> annualFinancialList ) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -52,6 +60,7 @@ public class Member {
         this.regNoBirth = regNoBirth;
         this.regNoEnc = regNoEnc;
         this.role = role;
+        this.annualFinancialList = annualFinancialList;
     }
 
     public void create() {

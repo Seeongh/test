@@ -1,4 +1,4 @@
-package com._3o3.demo.user;
+package com._3o3.demo.repository;
 
 import com._3o3.demo.api.member.domain.Member;
 import com._3o3.demo.api.member.domain.MemberStandard;
@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    @Query("SELECT m FROM Member m WHERE userId = :userId")
+    @Query("SELECT m FROM Member m LEFT JOIN FETCH m.annualFinancialList WHERE m.userId = :userId")
     Optional<Member> findByUserId(@Param("userId") String userId);
     Optional<Member> findByUserIdOrRegNoBirthAndRegNoEnc(String userId, String regNoBirth, String regNoEnc);
 }

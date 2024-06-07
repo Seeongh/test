@@ -20,10 +20,10 @@ public class SignInService  implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-      log.info("SignInService :: loadUserByUserName");
-         Member member = memberRepository.findByUserId(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("가입하지 않은 사용자."));
+        log.info("SignInService :: loadUserByUserName userId ashashash {}", userId);
 
+        Member  member = memberRepository.findByUserId(userId)
+                    .orElseThrow(() -> new UsernameNotFoundException("가입하지 않은 사용자."));
         return new SignInDetails(member);
     }
 }

@@ -1,6 +1,7 @@
 package com._3o3.demo.security.Authentication.filter;
 
 import com._3o3.demo.common.exception.handler.ErrorCode;
+import com._3o3.demo.security.Authentication.SignInDetails;
 import com._3o3.demo.security.Authentication.SignInService;
 import com._3o3.demo.security.Authentication.provider.JwtTokenProvider;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -35,20 +36,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //JWT 헤더 있는 경우
             if((authorizationHeader != null) && (authorizationHeader.startsWith("Bearer "))) {
                 String token = authorizationHeader.substring(7);
-
+                log.info("jwtToken validation start");
                 //JWT 유효성 검증
                 if(jwtTokenProvider.validateToken(token)) {
+                    log.info("jwtToken validation end");
                     String userId = jwtTokenProvider.getUserId(token);
 
                     //유저와 토큰 일치 시 userDetails 생성
-                    UserDetails userDetails = signInService.loadUserByUsername(userId);
-
-                    if(userDetails != null) {
+                    // DB에 등록된 사용자 정보 조회
+                    SignInDetails signInDetails =
+                            (SignInDetails) signInService.loadUserByUsername(userId);
+                    if(signInDetails != null) {
                         //받아온 요청으로 접근권한 인증 Token생성
                         UsernamePasswordAuthenticationToken  usernamePasswordAuthenticationToken=
-                                new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
+                                new UsernamePasswordAuthenticationToken(signInDetails, token, signInDetails.getAuthorities());
 
-                        log.info("허용된 사용자 userDetails = {}", userDetails.toString());
+
                         //현재 Request의 Security Context에 접근 권한 설정
                         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                     }
