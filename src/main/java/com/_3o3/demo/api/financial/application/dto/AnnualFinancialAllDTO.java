@@ -7,7 +7,7 @@ import com._3o3.demo.api.member.domain.Member;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.Year;
 
 /**
  * scrap으로 가지고온 정보
@@ -16,20 +16,22 @@ import java.time.LocalDate;
 @Getter
 @ToString
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class AnnualFinancialAllDTO {
 
+
     private BigDecimal annualTotalAmount;
-    private LocalDate incomeYear;
+    private Year incomeYear;
     private Member member;
     //소득공제
-    private  BigDecimal nationPensionAmount;
+    private BigDecimal nationPensionAmount;
     private BigDecimal creditCardAmount;
     private BigDecimal totalDeductionAmount;
 
     //세액공제
     private BigDecimal taxCreditAmount;
+
 
     public AnnualFinancial toAnnualFinancialEntity() {
         return AnnualFinancial

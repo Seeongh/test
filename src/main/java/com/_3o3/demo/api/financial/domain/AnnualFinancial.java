@@ -9,6 +9,7 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Year;
 
 import static jakarta.persistence.FetchType.LAZY;
 
@@ -30,7 +31,7 @@ public class AnnualFinancial {
     private BigDecimal annualTotalAmount;
 
     @Column(name = "income_year")
-    private LocalDate incomeYear;
+    private Year incomeYear;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "id")
@@ -45,7 +46,7 @@ public class AnnualFinancial {
     private TaxDeduction taxDeduction;
 
     @Builder
-    public AnnualFinancial(Long id, BigDecimal annualTotalAmount, LocalDate incomeYear, Member member, IncomeDeduction incomeDeduction, TaxDeduction taxDeduction) {
+    public AnnualFinancial(Long id, BigDecimal annualTotalAmount, Year incomeYear, Member member, IncomeDeduction incomeDeduction, TaxDeduction taxDeduction) {
         this.id = id;
         this.annualTotalAmount = annualTotalAmount;
         this.incomeYear = incomeYear;
@@ -54,7 +55,7 @@ public class AnnualFinancial {
         this.taxDeduction = taxDeduction;
     }
 
-    public void create(Member member, IncomeDeduction incomeDeduction, TaxDeduction taxDeduction ) {
+    public void create(Member member, IncomeDeduction incomeDeduction, TaxDeduction taxDeduction) {
         this.member = member;
         this.incomeDeduction = incomeDeduction;
         this.taxDeduction = taxDeduction;

@@ -1,13 +1,19 @@
 package com._3o3.demo.api.financial.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Entity
+@Builder
 @Table(name = "TAX_RATE")
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class TaxRate {
     //기본 세액 테이블 식별자
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

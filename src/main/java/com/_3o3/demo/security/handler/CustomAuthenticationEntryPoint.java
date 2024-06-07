@@ -1,7 +1,6 @@
 package com._3o3.demo.security.handler;
 
-import com._3o3.demo.common.ApiResponse;
-import com._3o3.demo.common.exception.handler.ErrorCode;
+import com._3o3.demo.common.ApiResultResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.web.ErrorResponse;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,12 +24,12 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         log.info(" entry point exception occur {}", authException.getMessage());
         String exceptionMessage = (String)request.getAttribute("exception");
 
-        ApiResponse<String> exceptionResponse = null;
+        ApiResultResponse<String> exceptionResponse = null;
         if(exceptionMessage == null) {
-            exceptionResponse =ApiResponse.of(HttpStatus.UNAUTHORIZED, authException.getMessage());
+            exceptionResponse = ApiResultResponse.of(HttpStatus.UNAUTHORIZED, authException.getMessage());
         }
         else{
-            exceptionResponse =  ApiResponse.of(HttpStatus.UNAUTHORIZED, exceptionMessage);
+            exceptionResponse =  ApiResultResponse.of(HttpStatus.UNAUTHORIZED, exceptionMessage);
         }
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

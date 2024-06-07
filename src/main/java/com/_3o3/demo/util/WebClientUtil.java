@@ -11,6 +11,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -28,14 +30,11 @@ public class WebClientUtil {
                     .body(Mono.just(requestBodyDto), RequestBodyDto.class)
                     .retrieve()
                     .bodyToMono(ResponseBodyDto.class)
-                    .block(); //비동기 방식
-            //log.info(response.toString());
-
+                    .timeout(Duration.ofSeconds(25))
+                    .block(); //동기 방식
         } catch (WebClientResponseException e) {
-            log.error("Scraping failed: {} {}", e.getStatusCode(), e.getResponseBodyAsString(), e);
             throw new WebClientException("정보를 불러오지 못했습니다.");
-        } catch (Exception e) {
-            log.error("An unexpected error occurred", e);
+        } catch(Exception e) {
             throw new WebClientException("정보를 불러오지 못했습니다.");
         }
 

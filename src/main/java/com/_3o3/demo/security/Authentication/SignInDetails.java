@@ -1,6 +1,7 @@
 package com._3o3.demo.security.Authentication;
 
 import com._3o3.demo.api.member.domain.Member;
+import com._3o3.demo.api.member.domain.RoleType;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,9 +23,9 @@ public class SignInDetails implements UserDetails {
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        log.info("signindetails getauthorities");
+        log.info("SignInDetails getAuthorities");
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("USER"));
+        authorities.add(new SimpleGrantedAuthority(RoleType.USER.name()));
         return authorities;
     }
 

@@ -8,9 +8,8 @@ import com._3o3.demo.api.financial.infrastructure.FinancialRepository;
 import com._3o3.demo.api.financial.infrastructure.TaxRepository;
 import com._3o3.demo.api.member.domain.Member;
 import com._3o3.demo.api.member.infrastructure.MemberRepository;
-import com._3o3.demo.common.ApiResponse;
+import com._3o3.demo.common.ApiResultResponse;
 import com._3o3.demo.common.exception.CustomValidationException;
-import com._3o3.demo.common.exception.WebClientException;
 import com._3o3.demo.security.Authentication.SignInDetails;
 import com._3o3.demo.util.AES256Util;
 import com._3o3.demo.util.WebClientUtil;
@@ -26,6 +25,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.Year;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -49,7 +50,7 @@ public class FinancialService {
      * @return
      */
     @Transactional
-    public ApiResponse<String> scrap(SignInDetails signInDetails) {
+    public ApiResultResponse<String> scrap(SignInDetails signInDetails) {
         // SecurityContext에서 JWT 토큰 추출
        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -57,24 +58,23 @@ public class FinancialService {
         Member member = memberRepository.findByUserId(signInDetails.getUsername())
                 .orElseThrow(() -> new CustomValidationException("잘못된 접근입니다."));
 
-
         //요청 생성
         RequestBodyDto requestBody = RequestBodyDto.builder()
                 .name(member.getName())
                 .regNo(member.getRegNoBirth() + "-" + AES256Util.decrypt(member.getRegNoEnc()))
                 .build();
 
-        //비동기 통신
-        ResponseBodyDto responseDto = webClientUtil.requestPostAnualFinancialData(jwtToken,"/scrap",requestBody);
-        log.info("ash responseDto {}" , responseDto.toString());
-        //응답 처리
-        AnnualFinancial annualFinancial = processApiResponse(responseDto, member);
-        if(annualFinancial == null) {
-            throw new WebClientException("정보를 불러오지 못했습니다.");
-        }
 
-        financialRepository.save(annualFinancial);
-        return ApiResponse.of(HttpStatus.OK, "정보를 불러오는데 성공했습니다.");
+        log.info("FinancialService :: scrap call Webclient");
+        //동기 통신
+        ResponseBodyDto responseDto = webClientUtil.requestPostAnualFinancialData(jwtToken, "/scrap", requestBody);
+
+        log.info("FinancialService :: scrap proccessApiResponse");
+        //응답 처리
+        processApiResponse(responseDto, member);
+
+        return ApiResultResponse.of(HttpStatus.OK, "정보를 불러오는데 성공했습니다.");
+
     }
 
     /**
@@ -83,7 +83,7 @@ public class FinancialService {
      * @param member
      * @return
      */
-    private AnnualFinancial processApiResponse(ResponseBodyDto response, Member member) {
+    private void processApiResponse(ResponseBodyDto response, Member member) {
 
         if (!response.getStatus().equals(RESP_SUCCESS)) {
             throw new CustomValidationException("정보를 불러오는데 실패했습니다.");
@@ -103,11 +103,13 @@ public class FinancialService {
                 .map(entry -> new BigDecimal(entry.getValue().replace(",", ""))) // 문자열 값을 BigDecimal로 변환
                 .reduce(BigDecimal.ZERO, BigDecimal::add); // 모든 값을 더함
 
+        Year financialYear = getFinancialYear(deduction.getCreditCardDeduction().getYear());
+
         //연간재무 dto
         AnnualFinancialCreateDTO annualFinancialCreateDTO = AnnualFinancialCreateDTO
                                 .builder()
                                 .annualTotalAmount(response.getData().getTotalIncome())
-                                .incomeYear(deduction.getCreditCardDeduction().getYear())
+                                .incomeYear(financialYear)
                                 .build();
 
         //소득공제 dto
@@ -123,9 +125,16 @@ public class FinancialService {
                                 .taxCreditAmount(deduction.getTaxDeduction())
                                 .build();
 
-        return saveAnnualFinancailData(annualFinancialCreateDTO, incomeDeductionCreateDTO, taxDeductionCreateDTO, member);
+        saveAnnualFinancailData(annualFinancialCreateDTO, incomeDeductionCreateDTO, taxDeductionCreateDTO, member);
     }
 
+    private Year getFinancialYear(String srcYear) {
+        try {
+            return Year.parse(srcYear);
+        } catch (DateTimeParseException e) {
+            return  Year.now(); // 파싱할 수 없는 경우 올해 연도 사용
+        }
+    }
     /**
      * 사용자가 조회한 결과 DB저장
      * @param annualFinancialCreateDTO
@@ -134,18 +143,15 @@ public class FinancialService {
      * @param member
      * @return
      */
-    private AnnualFinancial saveAnnualFinancailData( AnnualFinancialCreateDTO annualFinancialCreateDTO,
-                                          IncomeDeductionCreateDTO incomeDeductionCreateDTO,
-                                          TaxDeductionCreateDTO taxDeductionCreateDTO ,
-                                          Member member) {
-
-        //엔티티로 변경
+    private void saveAnnualFinancailData( AnnualFinancialCreateDTO annualFinancialCreateDTO, IncomeDeductionCreateDTO incomeDeductionCreateDTO,
+                                                     TaxDeductionCreateDTO taxDeductionCreateDTO, Member member) {
         AnnualFinancial annualFinancial = annualFinancialCreateDTO.toEntity();
         IncomeDeduction incomeDeduction = incomeDeductionCreateDTO.toEntity();
         TaxDeduction taxDeduction = taxDeductionCreateDTO.toEntity();
 
+
         annualFinancial.create(member, incomeDeduction, taxDeduction);
-        return annualFinancial;
+        financialRepository.save(annualFinancial);
     }
 
     /**
@@ -153,10 +159,10 @@ public class FinancialService {
      * @param signInDetails
      * @return
      */
-    public ApiResponse<Map<String,String>> refund(SignInDetails signInDetails) {
+    public ApiResultResponse<Map<String,String>> refund(SignInDetails signInDetails) {
         return financialRepository.findByUserId(signInDetails.getUsername())
                 .map(this::calculateAndSaveTax)
-                .orElseGet(() -> ApiResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, null));
+                .orElseThrow(() -> new CustomValidationException("데이터가 없습니다."));
     }
 
     /**
@@ -164,7 +170,7 @@ public class FinancialService {
      * @param taxDto
      * @return
      */
-    private ApiResponse<Map<String, String>> calculateAndSaveTax(AnnualFinancialAllDTO taxDto) {
+    private ApiResultResponse<Map<String, String>> calculateAndSaveTax(AnnualFinancialAllDTO taxDto) {
         // 과세표준 == (종합 소득금액 - 소득공제)
         // 기본세율 == ((과세표준-초과기준금액) * 세율) + 기준별 금액
         // 산출세액 == 과세 표준 * 기본세율
@@ -194,7 +200,7 @@ public class FinancialService {
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("결정세액", formattedFinalTax);
 
-        return ApiResponse.of(HttpStatus.OK, resultMap);
+        return ApiResultResponse.of(HttpStatus.OK, resultMap);
     }
 
     /**

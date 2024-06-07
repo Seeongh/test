@@ -16,7 +16,7 @@ public class WebClientConfig {
         return builder
                 .baseUrl("https://codetest-v4.3o3.co.kr")
                 .defaultHeaders(httpHeaders -> {
-                   // httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+                    httpHeaders.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
                     httpHeaders.add("X-API-KEY", "aXC8zK6puHIf9l53L8TiQg==");
                 })
                 .build();

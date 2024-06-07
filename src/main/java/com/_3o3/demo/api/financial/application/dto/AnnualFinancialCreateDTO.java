@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.Year;
 
 @Builder
 @Getter
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class AnnualFinancialCreateDTO {
 
     private BigDecimal annualTotalAmount;
-    private LocalDate incomeYear;
+    private Year incomeYear;
 
     public AnnualFinancial toEntity() {
         return AnnualFinancial
@@ -23,4 +23,6 @@ public class AnnualFinancialCreateDTO {
                 .incomeYear(incomeYear)
                 .build();
     }
+
+
 }

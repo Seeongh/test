@@ -12,14 +12,14 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition(
         info = @Info(
                 title = "3o3 API Docs",
-                description = "Description",
+                description = "삼쩜삼 백엔드 지원자 안성현 Swagger Docs",
                 version = "v1"
         )
 )
 @Configuration
 public class SwaggerConfig {
 
-    private static final String BEARER_TOKEN_PREFIX = "Bearer";
+    private static final String BEARER_PREFIX = "bearer";
 
     @Bean
     public OpenAPI openAPI() {
@@ -29,7 +29,7 @@ public class SwaggerConfig {
                 .addSecuritySchemes(securityJwtName, new SecurityScheme()
                         .name(securityJwtName)
                         .type(SecurityScheme.Type.HTTP)
-                        .scheme(BEARER_TOKEN_PREFIX)
+                        .scheme(BEARER_PREFIX)
                         .bearerFormat(securityJwtName));
 
         return new OpenAPI()
@@ -43,16 +43,11 @@ public class SwaggerConfig {
     public OpenAPI swaggerApi() {
         return new OpenAPI()
                 .components(new Components()
-                        // 여기부터 추가 부분
                         .addSecuritySchemes(SECURITY_SCHEME_NAME, new SecurityScheme()
                                 .name(SECURITY_SCHEME_NAME)
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme("bearer")
                                 .bearerFormat("JWT")))
                 .addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME));
-//                .info(new Info()
-//                        .title("스프링시큐리티 + JWT 예제")
-//                        .description("스프링시큐리티와 JWT를 이용한 사용자 인증 예제입니다.")
-//                        .version("1.0.0"));
     }
 }

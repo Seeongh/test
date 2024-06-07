@@ -4,12 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-//@SequenceGenerator(
-//        name = "USER_SEQ_GENERATOR",
-//        sequenceName = "USER_SEQ",
-//        initialValue = 1, allocationSize = 1
-//)
-@Table(name = "USER_TABLE" , uniqueConstraints = {
+@Table(name = "MEMBER" , uniqueConstraints = {
         @UniqueConstraint(
                 name="USER_ID_UNIQUE",
                 columnNames={"user_id"}

@@ -10,6 +10,6 @@ import java.util.Map;
 public class CreditCardDeduction {
 
     private List<Map<String, String>> month;
-    private LocalDate year;
+    private String year;
 
 }

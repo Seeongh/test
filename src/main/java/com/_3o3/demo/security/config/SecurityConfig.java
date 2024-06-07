@@ -34,7 +34,9 @@ public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
 
     private static final String[] ALLOW_LIST = {
-            "/szs/signup", "/szs/login", "/", "swagger-ui/**"
+            "/szs/signup", "/szs/login", "/", "/3o3/**",
+            "/swagger-ui/**",
+            "/swagger-resources/**",
     };
     private static final String[] AUTH_WHITELIST = {
             "/szs/scrap", "/szs/refund"
@@ -66,11 +68,6 @@ public class SecurityConfig {
                .exceptionHandling(exceptionHandling ->
                         exceptionHandling.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 );
-
-//                ).logout((logout) ->
-//                        logout.logoutSuccessUrl("/login")
-//                                .invalidateHttpSession(true)
-//                );
 
         http
                 .headers((headerConfig) ->

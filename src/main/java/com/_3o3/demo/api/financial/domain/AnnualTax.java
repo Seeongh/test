@@ -8,6 +8,7 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Year;
 
 /**
  * 개인의 연간 세금 계산 테이블
@@ -23,23 +24,18 @@ public class AnnualTax {
     private Long id;
 
     //산출세액
-    @Column(name = "calculated_tax")
     private BigDecimal calculatedTax;
 
     //과세표준
-    @Column(name = "tax_base")
     private BigDecimal taxIncome;
 
     //결정세액
-    @Column(name = "final_tax_amount")
     private BigDecimal finalTaxAmount;
 
-
-    @Column(name = "tax_calculation_year")
-    private LocalDate taxCalculationYear;
+    private Year taxCalculationYear;
 
     @Builder
-    public AnnualTax(Long id, BigDecimal calculatedTax, BigDecimal taxIncome, BigDecimal finalTaxAmount, LocalDate taxCalculationYear) {
+    public AnnualTax(Long id, BigDecimal calculatedTax, BigDecimal taxIncome, BigDecimal finalTaxAmount, Year taxCalculationYear) {
         this.id = id;
         this.calculatedTax = calculatedTax;
         this.taxIncome = taxIncome;

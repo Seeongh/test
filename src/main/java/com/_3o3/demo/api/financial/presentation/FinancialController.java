@@ -1,7 +1,10 @@
 package com._3o3.demo.api.financial.presentation;
 import com._3o3.demo.api.financial.application.FinancialService;
-import com._3o3.demo.common.ApiResponse;
+import com._3o3.demo.api.financial.docs.FinancialControllerDocs;
+import com._3o3.demo.common.ApiResultResponse;
 import com._3o3.demo.security.Authentication.SignInDetails;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -22,18 +25,18 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RequestMapping("/szs")
 @PreAuthorize("hasRole('USER')")
-public class FinancialController {
+public class FinancialController implements FinancialControllerDocs {
 
    private final FinancialService financialService;
 
-    @PostMapping(value = "/scrap", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiResponse<String> scrap(@AuthenticationPrincipal SignInDetails signInDetails) {
+    @PostMapping(value = "/scrap")
+    public ApiResultResponse<String> scrap(@AuthenticationPrincipal SignInDetails signInDetails) {
         log.info("FinancialController :: scrap");
         return financialService.scrap(signInDetails);
     }
 
     @GetMapping(value="/refund", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ApiResponse<Map<String,String>> refund(@AuthenticationPrincipal SignInDetails signInDetails) {
+    public ApiResultResponse<Map<String,String>> refund(@AuthenticationPrincipal SignInDetails signInDetails) {
         log.info("FinancialController :: refund");
         return financialService.refund(signInDetails);
     }

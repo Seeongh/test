@@ -31,4 +31,5 @@ public class PasswordEncoderTest {
         Assertions.assertNotEquals(rawPassword, encodedPassword);
         Assertions.assertTrue(bCryptPasswordEncoder.matches(rawPassword, encodedPassword));
      }
+
 }

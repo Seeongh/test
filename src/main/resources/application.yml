@@ -43,7 +43,7 @@ http:
     force: true
 
 #swagger설정
-springdoc:
+spring-doc:
   swagger-ui:
     groups-order: DESC
     tags-sorter: alpha
@@ -52,12 +52,14 @@ springdoc:
     display-request-duration: true
     defaultModelsExpandDepth: 2
     defaultModelExpandDepth: 2
+    path: /3o3/swagger.html
   api-docs:
     path: /3o3/swagger.html
+
   show-actuator : true
   default-consumes-media-type: application/json
   default-produces-media-type: application/json
   writer-with-default-pretty-printer: true
   model-and-view-allowed: true
   paths-to-match:
-    -/szs/**
+    - /szs/**

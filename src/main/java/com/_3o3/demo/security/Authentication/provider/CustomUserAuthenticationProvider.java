@@ -42,11 +42,11 @@ public class CustomUserAuthenticationProvider implements AuthenticationProvider 
 
         String username = authToken.getName();
         String password = (String) authToken.getCredentials();
-        if (username == null || username.isEmpty()) {
-            throw new UsernameNotFoundException("ID를 입력해주세요."); // TODO message properties 적용
+        if (username == null || username.isEmpty() || username.isBlank()) {
+            throw new UsernameNotFoundException("ID를 입력해주세요.");
         }
-        if (password == null || password.isEmpty()) {
-            throw new UsernameNotFoundException("비밀번호를 입력해주세요."); // TODO message properties 적용
+        if (password == null || password.isEmpty() || password.isBlank()) {
+            throw new UsernameNotFoundException("비밀번호를 입력해주세요.");
         }
 
         // DB에 등록된 사용자 정보 조회

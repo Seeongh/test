@@ -1,13 +1,12 @@
 package com._3o3.demo.api.financial.application.dto;
 
 import com._3o3.demo.api.financial.domain.AnnualTax;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.Year;
 
 @Builder
 @Getter
@@ -19,13 +18,10 @@ public class AnnualTaxCreateDTO {
     //과세표준
     private BigDecimal taxIncome;
 
-
     //결정세액
     private BigDecimal finalTaxAmount;
 
-
-    private LocalDate taxCalculationYear;
-
+    private Year taxCalculationYear;
 
     public AnnualTax toEntity() {
         return AnnualTax
@@ -36,4 +32,5 @@ public class AnnualTaxCreateDTO {
                 .taxCalculationYear(taxCalculationYear)
                 .build();
     }
+
 }
