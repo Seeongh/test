@@ -1,5 +1,6 @@
 package com._3o3.demo.api.financial.domain;
 
+import com._3o3.demo.api.member.domain.Member;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import lombok.ToString;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Year;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 /**
  * 개인의 연간 세금 계산 테이블
@@ -33,6 +36,10 @@ public class AnnualTax {
     private BigDecimal finalTaxAmount;
 
     private Year taxCalculationYear;
+
+    @OneToOne(mappedBy = "incomeDeduction", fetch = LAZY)
+    private Member member;
+
 
     @Builder
     public AnnualTax(Long id, BigDecimal calculatedTax, BigDecimal taxIncome, BigDecimal finalTaxAmount, Year taxCalculationYear) {

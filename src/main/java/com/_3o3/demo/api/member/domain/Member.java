@@ -2,6 +2,7 @@ package com._3o3.demo.api.member.domain;
 
 import com._3o3.demo.api.financial.domain.AnnualFinancial;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -22,25 +23,31 @@ public class Member {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
+    @NotNull
     private Long id;
 
     //사용자 아이디
     @Column(name = "user_id")
+    @NotNull
     private String userId;
 
     //사용자 비밀번호
     @Column(name = "password_enc")
+    @NotNull
     private String password;
 
+    @NotNull
     //사용자 이름
     private String name;
 
     //사용자 주민 등록 번호 - 생년월일
     @Column(name = "reg_no_birth")
+    @NotNull
     private String regNoBirth;
 
     //사용자 주민 등록 번호 - 뒷자리 암호화
     @Column(name = "reg_no_enc")
+    @NotNull
     private String regNoEnc;
 
     //권한
