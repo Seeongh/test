@@ -54,6 +54,7 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private RoleType role;
 
+    //가급적 양방향 연관관계가 아닌 단방향 연관관계 사용.
     @OneToMany(mappedBy = "member")
     private List<AnnualFinancial> annualFinancialList = new ArrayList<>();
 
