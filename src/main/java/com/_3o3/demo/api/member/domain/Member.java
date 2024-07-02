@@ -55,12 +55,12 @@ public class Member {
     private RoleType role;
 
     //가급적 양방향 연관관계가 아닌 단방향 연관관계 사용.
-    @OneToMany(mappedBy = "member")
-    private List<AnnualFinancial> annualFinancialList = new ArrayList<>();
+//    @OneToMany(mappedBy = "member")
+//    private List<AnnualFinancial> annualFinancialList = new ArrayList<>();
 
 
     @Builder
-    public Member(Long id, String userId, String password, String name, String regNoBirth, String regNoEnc, RoleType role, List<AnnualFinancial> annualFinancialList ) {
+    public Member(Long id, String userId, String password, String name, String regNoBirth, String regNoEnc, RoleType role ) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -68,7 +68,6 @@ public class Member {
         this.regNoBirth = regNoBirth;
         this.regNoEnc = regNoEnc;
         this.role = role;
-        this.annualFinancialList = annualFinancialList;
     }
 
     public void create() {
