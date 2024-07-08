@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "MEMBER" , uniqueConstraints = {
+@Table(name = "member" , uniqueConstraints = {
         @UniqueConstraint(
                 name="USER_ID_UNIQUE",
                 columnNames={"user_id"}
@@ -55,7 +55,7 @@ public class Member {
     private RoleType role;
 
     //가급적 양방향 연관관계가 아닌 단방향 연관관계 사용.
-//    @OneToMany(mappedBy = "member")
+//    @OneToMany(mappedBy = "member") //mappedBy (여기는 거울처럼 조회용으로만 쓰겠다.)
 //    private List<AnnualFinancial> annualFinancialList = new ArrayList<>();
 
 

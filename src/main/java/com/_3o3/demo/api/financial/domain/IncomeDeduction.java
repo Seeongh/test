@@ -33,7 +33,7 @@ public class IncomeDeduction {
     @Column(name="total_deduction_amount")
     private BigDecimal totalDeductionAmount;
 
-    @OneToOne(mappedBy = "incomeDeduction", fetch = LAZY)
+    //@OneToOne(mappedBy = "incomeDeduction", fetch = LAZY)
     private AnnualFinancial annualFinancial;
 
     @Builder

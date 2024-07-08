@@ -32,11 +32,15 @@ public class AnnualFinancial {
     @Column(name = "income_year")
     private Year incomeYear;
 
+    //어떤 객체에 어떤 걸로 맵핑을 할거야
+    //객체는 변경포인트가 투군데인데, 테이블의 포린키는 하나만 변경해야함
+    // 연관관계 주인
+    // 쉽게 생각하면 member테이블에 변경이 생겼는데 annualfinance 테이블에 변동이 생긴다? 관리가 용이하지 않음.
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne(fetch = LAZY, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "income_deduction_id" fetch = LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "incomeDeduction_id")
     private IncomeDeduction incomeDeduction;
 
